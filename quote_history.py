@@ -1,8 +1,18 @@
+#!/usr/bin/env python
 import ystockquote
 import datetime
 import csv
+import argparse
+import pprint
 
 TODAY = datetime.date.today()
+
+parser = argparse.ArgumentParser(description='Process some stock quotes')
+parser.add_argument('-o', '--output', default=False)
+parser.add_argument('-s', '--stock', required=True)
+parser.add_argument('-a', '--amount', type=int, required=True)
+parser.add_argument('-d', '--start_date', default='2010-01-01')
+args = parser.parse_args()
 
 
 def get_values(stock, start, shares):
@@ -20,16 +30,20 @@ def get_values(stock, start, shares):
 
 
 def write_values(values):
-    my_file = open('results.csv', 'wb')
-    wr = csv.writer(my_file, quoting=csv.QUOTE_ALL)
-    for row in values:
-        wr.writerow(row)
+    if args.output is False:
+        pprint.pprint(values)
+    else:
+        f_name = args.output + '_' + args.stock + '.csv'
+        my_file = open(f_name, 'wb')
+        wr = csv.writer(my_file, quoting=csv.QUOTE_ALL)
+        for row in values:
+            wr.writerow(row)
 
 
 def main():
     ''' get started'''
 
-    write_values(get_values('ALTV', '2011-01-01', 500))
+    write_values(get_values(args.stock, args.start_date, args.amount))
 
 
 if __name__ == '__main__':
