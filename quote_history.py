@@ -22,13 +22,14 @@ def get_values(stock, start, shares):
 def write_values(values):
     my_file = open('results.csv', 'wb')
     wr = csv.writer(my_file, quoting=csv.QUOTE_ALL)
-    wr.writerow(values)
+    for row in values:
+        wr.writerow(row)
 
 
 def main():
     ''' get started'''
 
-    write_values(get_values('AAPL', '2011-01-01', 1000))
+    write_values(get_values('ALTV', '2011-01-01', 500))
 
 
 if __name__ == '__main__':
